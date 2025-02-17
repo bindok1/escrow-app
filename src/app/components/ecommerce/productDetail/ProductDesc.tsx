@@ -45,6 +45,11 @@ function ProgressBar({ like, star, value, ...others }: ProductCardProps) {
   );
 }
 
+const cleanHtmlContent = (html: string | undefined) => {
+  if (!html) return '';
+  return html.replace(/<\/?p>/g, '').replace(/&nbsp;/g, ' ');
+};
+
 const TabPanel = (props: TabProps) => {
   const { children, value, index, ...other } = props;
 
@@ -107,7 +112,7 @@ const ProductDesc = () => {
             {product?.name}
           </Typography>
           <Typography color="textSecondary" mt={4}>
-            {product?.description}
+            {cleanHtmlContent( product?.description)}
           </Typography>
           <Typography color="textSecondary" variant="body1" fontWeight={400} mt={4}>
             Seller: {product?.seller_address}

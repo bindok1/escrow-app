@@ -46,6 +46,7 @@ const ProductDetail = () => {
     )
   );
 
+
   /// select colors on click
   // const [scolor, setScolor] = useState(product ? product.colors[0] : "");
   // const setColor = (e: string) => {
@@ -97,7 +98,8 @@ const ProductDetail = () => {
             mt={1}
             color={theme.palette.text.secondary}
           >
-            {product?.description}
+            {
+            product?.description}
           </Typography>
           {/* ------------------------------------------- */}
           {/* Price */}

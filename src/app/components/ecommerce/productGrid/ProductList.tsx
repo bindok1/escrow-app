@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { filter, orderBy } from "lodash";
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import CardContent from '@mui/material/CardContent'
-import Fab from '@mui/material/Fab'
-import Grid from '@mui/material/Grid'
-import Rating from '@mui/material/Rating'
-import Skeleton from '@mui/material/Skeleton'
-import Stack from '@mui/material/Stack'
-import { Theme } from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
-import useMediaQuery from '@mui/material/useMediaQuery'
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CardContent from "@mui/material/CardContent";
+import Fab from "@mui/material/Fab";
+import Grid from "@mui/material/Grid";
+import Rating from "@mui/material/Rating";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
+import { Theme } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Link from "next/link";
 import { useSelector, useDispatch } from "@/store/hooks";
 import {
@@ -24,18 +24,34 @@ import { IconBasket, IconMenu2 } from "@tabler/icons-react";
 import AlertCart from "../productCart/AlertCart";
 import emptyCart from "/public/images/products/empty-shopping-cart.svg";
 
-
 import Image from "next/image";
 import BlankCard from "../../shared/BlankCard";
 import { ProductType } from "@/app/(DashboardLayout)/types/apps/eCommerce";
+import { useTransaction as createTransaction } from "@/app/hooks/useTransaction";
 
 interface Props {
   onClick: (event: React.SyntheticEvent | Event) => void;
 }
 
 const ProductList = ({ onClick }: Props) => {
+  const {
+    buyProduct,
+    isLoading: isBuying,
+    error: buyError,
+  } = createTransaction();
   const dispatch = useDispatch();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
+
+  const handleBuy = async (product: ProductType) => {
+    try {
+      const priceInBNB = parseFloat(product.price).toFixed(18);
+      await buyProduct(product.seller_address, product.id, priceInBNB);
+      setCartalert(true);
+    } catch (err) {
+      console.error("Buy failed : ", err);
+      setCartalert(true);
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -49,7 +65,7 @@ const ProductList = ({ onClick }: Props) => {
   ) => {
     // SORT BY
     if (sortBy === "newest") {
-      products = orderBy(products, ["created_at"], ["desc"]); 
+      products = orderBy(products, ["created_at"], ["desc"]);
     }
     if (sortBy === "priceDesc") {
       products = orderBy(products, ["price"], ["desc"]);
@@ -61,7 +77,7 @@ const ProductList = ({ onClick }: Props) => {
     //FILTER PRODUCTS BY Search
     if (search !== "") {
       products = products.filter((_product) =>
-        _product.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) 
+        _product.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
       );
     }
 
@@ -70,8 +86,8 @@ const ProductList = ({ onClick }: Props) => {
       const minMax = filters.price ? filters.price.split("-") : "";
       products = products.filter((_product) =>
         filters.price
-          ? parseFloat(_product.price) >= parseFloat(minMax[0]) && 
-            parseFloat(_product.price) <= parseFloat(minMax[1]) 
+          ? parseFloat(_product.price) >= parseFloat(minMax[0]) &&
+            parseFloat(_product.price) <= parseFloat(minMax[1])
           : true
       );
     }
@@ -163,21 +179,20 @@ const ProductList = ({ onClick }: Props) => {
                       component={Link}
                       href={`/ecommerce/detail/${product.id}`}
                     >
-                      <Image 
-                        src={product.image_url} 
+                      <Image
+                        src={product.image_url}
                         alt={product.name}
-                        width={250} 
-                        height={268} 
-                        style={{ width: "100%",objectFit: 'contain' }} 
+                        width={250}
+                        height={268}
+                        style={{ width: "100%", objectFit: "contain" }}
                       />
                     </Typography>
-                    <Tooltip title="Add To Cart">
+                    <Tooltip title="Buy Now">
                       <Fab
                         size="small"
                         color="primary"
-                        onClick={() =>
-                          dispatch(addToCart(product)) && handleClick()
-                        }
+                        onClick={() => handleBuy(product)}
+                        disabled={isBuying}
                         sx={{
                           bottom: "75px",
                           right: "15px",

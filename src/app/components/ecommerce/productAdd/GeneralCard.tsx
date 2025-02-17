@@ -13,6 +13,7 @@ interface GeneralCardProps {
   onDescriptionChange: (value: string) => void;
 }
 
+
 const GeneralCard = ({
   productName,
   description,
@@ -34,9 +35,14 @@ const GeneralCard = ({
           </CustomFormLabel>
         </Grid>
         <Grid item xs={12}>
-          <CustomTextField id="p_name" placeholder="Product Name" fullWidth
-          value={productName}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onNameChange(e.target.value)}
+          <CustomTextField
+            id="p_name"
+            placeholder="Product Name"
+            fullWidth
+            value={productName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onNameChange(e.target.value)
+            }
           />
           <Typography variant="body2" sx={{ mt: 1 }}>
             A product name is required and recommended to be unique.
@@ -48,8 +54,10 @@ const GeneralCard = ({
         </Grid>
         <Grid item xs={12}>
           <QuillEdit
-          value={description}
-          onChange={(value: string) => onDescriptionChange(value)}
+            value={description}
+            onChange={(value: string) =>
+              onDescriptionChange(value)
+            }
           />
           <Typography sx={{ mt: 1 }} variant="body2">
             Set a description to the product for better visibility.

@@ -5,9 +5,11 @@ import Snackbar from '@mui/material/Snackbar';
 interface Props {
   handleClose: (event: React.SyntheticEvent | any) => void;
   openCartAlert: boolean;
+  severity? : 'success' | 'error' | 'warning' | 'info';
+  message?: string;
 }
 
-const AlertCart = ({ handleClose, openCartAlert }: Props) => {
+const AlertCart = ({ handleClose, openCartAlert, severity='success', message = 'Transactoin initiated!' }: Props) => {
   return (
     <React.Fragment>
       <Snackbar
@@ -16,8 +18,8 @@ const AlertCart = ({ handleClose, openCartAlert }: Props) => {
         autoHideDuration={1000}
         onClose={handleClose}
       >
-        <Alert severity="success" variant="filled" sx={{ width: '100%', color: 'white' }}>
-          Item Added to the Cart!!!
+        <Alert severity={severity} variant="filled" sx={{ width: '100%', color: 'white' }}>
+          {message}
         </Alert>
       </Snackbar>
     </React.Fragment>
