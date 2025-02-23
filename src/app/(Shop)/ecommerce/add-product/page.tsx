@@ -1,6 +1,15 @@
 "use client";
 
-import { Alert, AlertTitle, Box, Button, Grid, Snackbar, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Grid,
+  Snackbar,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Breadcrumb from "@/app/(DashboardLayout)/layout/shared/breadcrumb/Breadcrumb";
 import PageContainer from "@/app/components/container/PageContainer";
 
@@ -13,6 +22,7 @@ import { useAccount } from "wagmi";
 import { supabase } from "@/app/lib/supabase/client";
 import CustomAddress from "@/app/components/ecommerce/productAdd/CustomAddress";
 import { uploadImage } from "@/app/lib/utils/imageUploadt";
+import ContactInfo from "@/app/components/ecommerce/productAdd/ContactInfo";
 
 const BCrumb = [
   {
@@ -24,8 +34,6 @@ const BCrumb = [
   },
 ];
 
-
-
 const EcommerceAddProduct = () => {
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
@@ -35,19 +43,19 @@ const EcommerceAddProduct = () => {
     price: "",
     image_url: "",
     seller_address: "",
+    contact_info: "",
   });
 
   const handleImageUpload = (file: File) => {
     setLoading(true);
     uploadImage(file)
-      .then(url => setProduct({ ...product, image_url: url }))
-      .catch(err =>{
+      .then((url) => setProduct({ ...product, image_url: url }))
+      .catch((err) => {
         console.error(err);
-        alert('Error uploading image');
+        alert("Error uploading image");
       })
       .finally(() => setLoading(false));
   };
-
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -56,11 +64,13 @@ const EcommerceAddProduct = () => {
   // Update handleSubmit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validation checks
     const validationErrors = {
       wallet: !address && "Please connect your wallet first",
-      fields: (!product.name || !product.price || !product.seller_address) && "Please fill all the required fields"
+      fields:
+        (!product.name || !product.price || !product.seller_address) &&
+        "Please fill all the required fields",
     };
 
     const error = validationErrors.wallet || validationErrors.fields;
@@ -75,14 +85,18 @@ const EcommerceAddProduct = () => {
     try {
       const { error: supabaseError } = await supabase
         .from("coinrupiah")
-        .insert([{ ...product, seller_address: product.seller_address || address }])
+        .insert([
+          { ...product, seller_address: product.seller_address || address },
+        ])
         .select();
 
       const isSuccess = !supabaseError;
-      setAlertMessage(isSuccess ? "Product added successfully!" : "Failed to add product");
+      setAlertMessage(
+        isSuccess ? "Product added successfully!" : "Failed to add product"
+      );
       setSeverity(isSuccess ? "success" : "error");
       setShowAlert(true);
-      
+
       if (isSuccess) {
         setTimeout(() => window.location.reload(), 4000);
       }
@@ -94,40 +108,38 @@ const EcommerceAddProduct = () => {
       setLoading(false);
     }
   };
-  
-    
 
   return (
     <PageContainer title="Add Product" description="this is Add Product">
-      <Snackbar 
-        open={showAlert} 
-        autoHideDuration={4000} 
+      <Snackbar
+        open={showAlert}
+        autoHideDuration={4000}
         onClose={() => setShowAlert(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert 
-          variant="filled" 
+        <Alert
+          variant="filled"
           severity={severity}
           onClose={() => setShowAlert(false)}
-          sx={{ width: '100%' }}
+          sx={{ width: "100%" }}
         >
-          <AlertTitle>{severity === "success" ? "Success" : "Error"}</AlertTitle>
+          <AlertTitle>
+            {severity === "success" ? "Success" : "Error"}
+          </AlertTitle>
           {alertMessage}
           {severity === "success" && <strong> — Refreshing page...</strong>}
         </Alert>
       </Snackbar>
       <>
-      {showAlert ? (
-        <Alert 
-          variant="filled" 
-          severity={severity}
-          sx={{ mb: 2 }}
-        >
-          <AlertTitle>{severity === "success" ? "Success" : "Error"}</AlertTitle>
-          {alertMessage}
-          {severity === "success" && <strong> — Refreshing page...</strong>}
-        </Alert>
-      ) : null}
+        {showAlert ? (
+          <Alert variant="filled" severity={severity} sx={{ mb: 2 }}>
+            <AlertTitle>
+              {severity === "success" ? "Success" : "Error"}
+            </AlertTitle>
+            {alertMessage}
+            {severity === "success" && <strong> — Refreshing page...</strong>}
+          </Alert>
+        ) : null}
       </>
 
       {/* breadcrumb */}
@@ -141,24 +153,28 @@ const EcommerceAddProduct = () => {
                   productName={product.name}
                   description={product.description}
                   onNameChange={(value) =>
-                    setProduct({...product, name: value })
+                    setProduct({ ...product, name: value })
                   }
                   onDescriptionChange={(value) =>
-                    setProduct({...product, description: value })
+                    setProduct({ ...product, description: value })
                   }
                 />
               </BlankCard>
 
               <BlankCard>
-                <MediaCard imageUrl={product.image_url}
-                onImageUpload={handleImageUpload}/>
+                <MediaCard
+                  imageUrl={product.image_url}
+                  onImageUpload={handleImageUpload}
+                />
               </BlankCard>
 
               <BlankCard>
-              <PricingCard 
-                price={product.price}
-                onPriceChange={(value) => setProduct({...product, price: value})}
-              />
+                <PricingCard
+                  price={product.price}
+                  onPriceChange={(value) =>
+                    setProduct({ ...product, price: value })
+                  }
+                />
               </BlankCard>
 
               <BlankCard>
@@ -166,6 +182,15 @@ const EcommerceAddProduct = () => {
                   sellerAddress={product.seller_address}
                   onAddressChange={(value) =>
                     setProduct({ ...product, seller_address: value })
+                  }
+                />
+              </BlankCard>
+
+              <BlankCard>
+                <ContactInfo
+                  contactInfo={product.contact_info}
+                  onContactInfoChange={(value) =>
+                    setProduct({ ...product, contact_info: value })
                   }
                 />
               </BlankCard>
@@ -207,7 +232,12 @@ const EcommerceAddProduct = () => {
         </Grid>
 
         <Stack direction="row" spacing={2} mt={3}>
-          <Button variant="contained" color="primary" type="submit" disabled={loading}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Loading..." : "Add Product"}
           </Button>
           <Button type="button" variant="outlined" color="error">
@@ -220,4 +250,3 @@ const EcommerceAddProduct = () => {
 };
 
 export default EcommerceAddProduct;
-

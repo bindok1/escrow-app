@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { sellerService } from "@/app/services/transaction/seller";
+import { buyerService } from "@/app/services/transaction/buyer";
 import { useAccount } from "wagmi";
+import { ContractTransaction } from "@/type/transaction";
 
-export const useSellerTransaction = () => {
+export const useBuyerTransaction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { address, isConnected } = useAccount();
@@ -18,13 +19,13 @@ export const useSellerTransaction = () => {
     return true;
   };
 
-  const getSellerTransactions = async () => {
+  const getBuyerTransactions = async () => {
     if (!checkWallet()) return [];
 
     setIsLoading(true);
     try {
-      const transactions = await sellerService.getTransactions(address!);
-      return transactions;
+      const transactions = await buyerService.getTransactions(address!);
+      return transactions as ContractTransaction[];
     } catch (err) {
       const message = handleError(err);
       setError(message);
@@ -34,19 +35,17 @@ export const useSellerTransaction = () => {
     }
   };
 
-  const deliverProduct = async (transactionId: number, proofImage: string) => {
+  const confirmReceipt = async (transactionId: number) => {
     if (!checkWallet()) return;
 
     setIsLoading(true);
     try {
-      const result = await sellerService.deliverProduct({
+     
+      const hash = await buyerService.confirmReceive({
         transactionId,
-        proofImage,
       });
 
-      await getSellerTransactions();
-
-      return result;
+      return hash;
     } catch (err) {
       const message = handleError(err);
       setError(message);
@@ -56,5 +55,5 @@ export const useSellerTransaction = () => {
     }
   };
 
-  return { getSellerTransactions, deliverProduct, isLoading, error };
+  return { getBuyerTransactions, confirmReceipt, isLoading, error };
 };

@@ -1,24 +1,28 @@
 "use client";
+
 import { Box, Container, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
 import { useSellerTransaction } from "@/app/hooks/useSellerTransaction";
-import DownloadCard from "@/app/components/shared/DownloadCard";
-import { columns } from "@/app/components/react-table/TableBasicReact";
-import { ViewState } from "../enum/enumTransaction";
+import { TransactionStatus, UITransaction } from "@/type/transaction";
+import { checkNetworkConnection } from "@/utils/networkCheck";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
-import { UITransaction, TransactionStatus } from "@/type/transaction";
+import { ViewState } from "../enum/enumTransaction";
+import { columns } from "@/app/components/react-table/TableSellerReact";
+import DownloadCard from "@/app/components/shared/DownloadCard";
 import { TransactionTable } from "../components/TransactionTable";
 import { StatusMessage } from "../components/StatusMessage";
-import { useAccount } from "wagmi";
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<UITransaction[]>([]);
   const { getSellerTransactions, deliverProduct, isLoading, error } = useSellerTransaction();
-  const {isConnected, address} = useAccount();
+  const [networkError, setNetworkError] = useState<string | null>(null);
+  const { isConnected, address } = useAccount();
 
   const handleDeliver = async (transactionId: number) => {
     try {
-      await deliverProduct(transactionId, "proof-url");
+      const proofImage = "proof-url";
+      await deliverProduct(transactionId, proofImage);
       await loadTransactions();
     } catch (err) {
       console.error("Delivery failed:", err);
@@ -27,22 +31,25 @@ export default function TransactionsPage() {
 
   const loadTransactions = async () => {
     try {
-      const data = await getSellerTransactions();
-      const enhancedData: UITransaction[] = data.map((tx, index) => ({
-        ...tx,
-        id: index + 1,
-        status: tx.status as TransactionStatus,
+      setNetworkError(null);
+      await checkNetworkConnection();
+      
+      const contractTransactions = await getSellerTransactions();
+      const enhancedTransactions: UITransaction[] = contractTransactions.map((transaction) => ({
+        ...transaction,
+        status: transaction.status as TransactionStatus,
         onDeliver: handleDeliver,
       }));
-      setTransactions(enhancedData);
+    
+      setTransactions(enhancedTransactions);
     } catch (err) {
       console.error("Failed to load transactions:", err);
+      setNetworkError(err instanceof Error ? err.message : "Unknown error");
     }
   };
 
   useEffect(() => {
     if (isConnected && address) {
-      console.log('Loading transactions for:', address);
       loadTransactions();
     }
   }, [isConnected, address, error]);
