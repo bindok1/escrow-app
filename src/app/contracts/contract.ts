@@ -42,13 +42,13 @@ export const writeContract = async (
 ) => {
   const walletClient = await getWalletClient();
   const [account] = await walletClient.getAddresses();
-  
+
   return walletClient.writeContract({
     address: CONTRACT_ADDRESS,
     abi: DigitalEscrowABI.abi,
     functionName,
     args,
     account,
-    ...options
+    ...options,
   });
 };

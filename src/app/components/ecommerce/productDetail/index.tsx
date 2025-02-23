@@ -27,6 +27,7 @@ import AlertCart from "../productCart/AlertCart";
 import { ProductType } from "@/app/(DashboardLayout)/types/apps/eCommerce";
 
 
+
 const ProductDetail = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -41,9 +42,16 @@ const ProductDetail = () => {
 
   // Get Products
   const product: ProductType | undefined = useSelector(
-    (state: AppState) => state.ecommerceReducer.products.find(
-      (p: ProductType) => p.id === getTitle
-    )
+    (state: AppState) => {
+      const foundProduct = state.ecommerceReducer.products.find(
+        (product) => product.id === getTitle
+      );
+
+      if (foundProduct) {
+        return foundProduct; 
+      }
+      return undefined;
+    }
   );
 
 
