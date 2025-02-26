@@ -2,16 +2,23 @@ import { Button, Chip } from "@mui/material";
 import { IconTruck } from "@tabler/icons-react";
 import { useAccount } from "wagmi";
 import { UITransaction, TransactionState } from "@/type/transaction";
+import { isTransactionExpired } from "@/app/services/transaction/utils/transactionUtils";
 
 export const ActionCell = ({ transaction }: { transaction: UITransaction }) => {
   const { status, seller, proofImage, id, onDeliver } = transaction;
   const { address } = useAccount();
+  const isExpired = isTransactionExpired(transaction);
 
   const canDeliver = 
+  !isExpired &&
     status === TransactionState.FUNDED &&
     onDeliver &&
     seller.toLowerCase() === address?.toLowerCase() &&
     !proofImage;
+
+    if (isExpired) {
+      return <Chip label="Transaction Expired" color="error" size="small" />;
+    }
 
   switch (status) {
     case TransactionState.CREATED:
