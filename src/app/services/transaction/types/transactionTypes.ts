@@ -21,4 +21,15 @@ export interface Transaction {
   disputeInitiatedAt: bigint;
 }
 
+//for buyer
+export interface CreateTransactionParams {
+  sellerAddress: string;
+  productKey: string;
+  amount: string;
+}
+
+export interface ConfirmReceiveParams {
+  transactionId: number;
+}
+
 export type TransactionArray = [string, string, bigint, string, string, number, bigint, bigint];

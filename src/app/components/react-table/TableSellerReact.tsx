@@ -35,6 +35,7 @@ export const columns = [
     },
   }),
   columnHelper.accessor("id", {
+    header: "Actions",
     id: "actions",
     cell: (info) => <ActionCell transaction={info.row.original} />,
   }),

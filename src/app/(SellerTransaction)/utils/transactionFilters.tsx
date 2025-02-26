@@ -1,5 +1,7 @@
 import { ContractTransaction, TransactionState } from "@/type/transaction";
 
+import { isNotSelfTransaction } from "@/app/services/transaction/utils/transactionUtils";
+
 export const filterSellerTransactions = (
   transactions: ContractTransaction[],
   sellerAddress?: string
@@ -8,8 +10,6 @@ export const filterSellerTransactions = (
   
   return transactions.filter(tx => {
     const isSeller = tx.seller.toLowerCase() === sellerAddress.toLowerCase();
-    const notSelfTransaction = tx.seller.toLowerCase() !== tx.buyer.toLowerCase();
-    
-    return isSeller && notSelfTransaction;
+    return isSeller && isNotSelfTransaction(tx.buyer, tx.seller);
   });
 };
