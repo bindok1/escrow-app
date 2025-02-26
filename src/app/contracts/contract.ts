@@ -3,7 +3,7 @@ import { createPublicClient, createWalletClient, custom, http } from 'viem';
 import { bscTestnet } from 'viem/chains';
 import DigitalEscrowABI from './escrow/DigitalEscrow.sol/DigitalEscrow.json';
 
-// Fix contract address format
+
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`;
 
 if (!CONTRACT_ADDRESS) {
@@ -42,13 +42,13 @@ export const writeContract = async (
 ) => {
   const walletClient = await getWalletClient();
   const [account] = await walletClient.getAddresses();
-  
+
   return walletClient.writeContract({
     address: CONTRACT_ADDRESS,
     abi: DigitalEscrowABI.abi,
     functionName,
     args,
     account,
-    ...options
+    ...options,
   });
 };

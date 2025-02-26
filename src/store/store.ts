@@ -25,6 +25,7 @@ export const store = configureStore({
 const rootReducer = combineReducers({
  customizer: CustomizerReducer,
  ecommerceReducer: EcommerceReducer,
+ 
 });
 
 export const persistor = persistStore(store);

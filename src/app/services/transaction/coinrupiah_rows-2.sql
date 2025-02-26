@@ -1,0 +1,1 @@
+INSERT INTO "public"."coinrupiah" ("id", "created_at", "name", "description", "price", "image_url", "seller_address", "contact_info") VALUES ('15', '2025-02-22 12:03:38.29456+00', 'tess', '<p>ess</p>', '0.01', 'https://rtnjqthwddsojwluuffp.supabase.co/storage/v1/object/public/products/0.33207694487266237.png', '0x8501A43909a85b71Dd31dA6De39575245C1a2cba', 'Whatsapp');

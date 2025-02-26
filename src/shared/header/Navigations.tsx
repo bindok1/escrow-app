@@ -15,22 +15,23 @@ export const NavLinks = [
     href: "/",
   },
   {
-    title: "Seller Dashboard",
-    href: "/seller",
-  },
-  {
-    title: "Buyer",
-    href: "/buyer",
-  },
-  {
     title: "Add Product",
     new: true,
     href: "/ecommerce/add-product",
   },
   {
-    title: "My Transactions",
-    href: "/transactions",
-  }
+    title: "Shop",
+    href: "/ecommerce/shop",
+  },
+
+  {
+    title: "Buyer Transactions",
+    href: "/buyer-transactions",
+  },
+  {
+    title: "Seller Transactions",
+    href: "/seller-transactions",
+  },
 ];
 
 const Navigations = () => {

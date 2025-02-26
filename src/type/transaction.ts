@@ -1,6 +1,23 @@
 export type TransactionStatus = 0 | 1 | 2 | 3 | 4;
 
+export enum TransactionState {
+    CREATED = 0,
+    FUNDED = 1,
+    DELIVERED = 2,
+    COMPLETED = 3,
+    DISPUTED = 4
+}
+
+export const isValidTransactionStatus = (status: number): status is TransactionStatus => {
+    return status >= 0 && status <= 4;
+};
+
+export const getStatusLabel = (status: TransactionStatus): string => {
+    return TransactionState[status];
+};
+
 export interface ContractTransaction {
+    id: number;
     buyer: string;
     seller: string;
     amount: bigint;
@@ -12,8 +29,8 @@ export interface ContractTransaction {
 }
 
 export interface UITransaction extends ContractTransaction {
-    id: number;
     onDeliver?: (id: number) => Promise<void>;
+    onConfirmReceipt?: (id: number) => Promise<void>;
 }
 
 export const TransactionStatusConfig = {

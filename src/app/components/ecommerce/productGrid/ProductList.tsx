@@ -28,12 +28,14 @@ import Image from "next/image";
 import BlankCard from "../../shared/BlankCard";
 import { ProductType } from "@/app/(DashboardLayout)/types/apps/eCommerce";
 import { useTransaction as createTransaction } from "@/app/hooks/useTransaction";
+import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
   onClick: (event: React.SyntheticEvent | Event) => void;
 }
 
 const ProductList = ({ onClick }: Props) => {
+  
   const {
     buyProduct,
     isLoading: isBuying,
@@ -42,15 +44,15 @@ const ProductList = ({ onClick }: Props) => {
   const dispatch = useDispatch();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
 
-  const handleBuy = async (product: ProductType) => {
-    try {
-      const priceInBNB = parseFloat(product.price).toFixed(18);
-      await buyProduct(product.seller_address, product.id, priceInBNB);
-      setCartalert(true);
-    } catch (err) {
-      console.error("Buy failed : ", err);
-      setCartalert(true);
-    }
+  const handleBuy = (product: ProductType) => {
+    
+    
+    // Generate secure transaction ID
+    const timestamp = Date.now();
+    const randomId = uuidv4();
+    const secureTransactionId = `${timestamp}-${randomId}-${product.id}`;
+    
+    window.open(`/ecommerce/purchase/${secureTransactionId}`, '_blank');
   };
 
   useEffect(() => {

@@ -1,7 +1,9 @@
 "use client";
 import "@rainbow-me/rainbowkit/styles.css";
 import HpHeader from "@/shared/header/HpHeader";
-import { WalletProvider } from "../lib/wallet_provider/WalletProvider";
+import { WalletProvider } from "@/app/lib/wallet_provider/WalletProvider";
+import { Box } from "@mui/material";
+
 
 export default function RootLayout({
   children,
@@ -11,7 +13,9 @@ export default function RootLayout({
   return (
     <WalletProvider>
       <HpHeader />
+      <Box sx={{p:3}}>
       {children}
+    </Box>
     </WalletProvider>
   );
 }
