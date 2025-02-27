@@ -1,7 +1,7 @@
 const nextConfig = {reactStrictMode: false,
     images: {
         domains: ['rtnjqthwddsojwluuffp.supabase.co',
-            'storage.googleapis.com'
+            'storage.googleapis.com',
         ]
     }
 };
