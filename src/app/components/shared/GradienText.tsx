@@ -8,6 +8,7 @@ export const GradientText = (props: TypographyProps) => (
       backgroundClip: "text",
       WebkitBackgroundClip: "text",
       color: "transparent",
+      paddingBottom: 2,
       ...props.sx
     }}
   />

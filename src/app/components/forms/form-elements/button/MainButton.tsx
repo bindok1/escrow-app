@@ -2,9 +2,12 @@ import { Button, ButtonProps } from '@mui/material';
 
 interface MainButtonProps extends ButtonProps {
   children: React.ReactNode;
+  target?: string;
+  rel?: string;
+  href?: string;
 }
 
-const MainButton = ({ children, ...props }: MainButtonProps) => (
+const MainButton = ({ children, target, rel, href, ...props }: MainButtonProps) => (
   <Button
     variant="contained"
     color="primary"

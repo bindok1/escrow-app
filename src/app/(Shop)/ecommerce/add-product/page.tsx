@@ -61,7 +61,7 @@ const EcommerceAddProduct = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [severity, setSeverity] = useState<"success" | "error">("success");
 
-  // Update handleSubmit
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
