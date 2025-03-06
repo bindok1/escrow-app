@@ -28,7 +28,15 @@ export default function HomePage() {
           <HpHeader />
           
             <Banner />
-            <Box height={500}></Box>
+            <Box 
+              sx={{
+                height: {
+                  xs: 100,  
+                  sm: 300,  
+                  md: 500,
+                }
+              }}
+            />
             <HowItWorks />
             <WhyChooseUs />
             <UseCases />

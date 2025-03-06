@@ -59,7 +59,7 @@ const WhyChooseUs = () => {
           </motion.div>
 
           {/* Features Grid */}
-          <Grid container spacing={3}>
+          <Grid container spacing={{xs: 0, md:3}}>
             {features.map((feature, index) => (
               <Grid item xs={12} md={6} key={index}>
                 <motion.div

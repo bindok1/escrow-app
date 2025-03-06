@@ -17,6 +17,7 @@ const FeatureCard = ({ title, description, icon, imageSrc }: FeatureCardProps) =
         flex: 1,
         background: "#FFFFFF",
         p: 1,
+        mb: 2,
         borderRadius: "24px",
         border: "1px solid rgba(0, 116, 186, 0.1)",
       }}
@@ -45,11 +46,20 @@ const FeatureCard = ({ title, description, icon, imageSrc }: FeatureCardProps) =
           </Typography>
           {imageSrc && (
             <Box
-              sx={{
-                position: "relative",
-                width: "416px",
-                height: "403px",
-              }}
+            sx={{
+              position: "relative",
+              width: {
+                xs: '100%', 
+                sm: '350px',
+                md: '416px'
+              },
+              height: {
+                xs: '250px', 
+                sm: '300px',
+                md: '403px'  
+              },
+              mx: 'auto', 
+            }}
             >
               <Image
                 src={imageSrc}

@@ -136,7 +136,7 @@ const Banner = () => {
             }}
           >
             <Image
-              src="/images/backgrounds/banner-img.avif"
+              src="/images/backgrounds/banner-2.jpg"
               alt="Platform Preview"
               width={1000}
               height={450}
