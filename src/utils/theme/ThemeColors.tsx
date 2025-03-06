@@ -1,3 +1,5 @@
+import { common } from "@mui/material/colors";
+
 const ThemeColors = [
   {
     name: 'BLUE_THEME',
@@ -12,6 +14,9 @@ const ThemeColors = [
         light: '#EDFBF7',
         dark: '#39C7AD',
       },
+      common:{
+        white: '#FFFFFF'
+      }
     },
   },
   {

@@ -1,12 +1,22 @@
 "use client";
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiProvider } from 'wagmi';
-import '@rainbow-me/rainbowkit/styles.css';
-import { Box, Container, Typography } from '@mui/material';
-import HpHeader from '@/shared/header/HpHeader';
-import { wagmiConfig } from '@/app/lib/wagmi/wagmi';
-import { bscTestnet } from 'viem/chains';
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import "@rainbow-me/rainbowkit/styles.css";
+import { Box, Container, Typography } from "@mui/material";
+import HpHeader from "@/shared/header/HpHeader";
+import { wagmiConfig } from "@/app/lib/wagmi/wagmi";
+import { bscTestnet } from "viem/chains";
+import Banner from "./(HomePage)/homepage/Banner";
+
+
+import UseCases from "./(HomePage)/homepage/UseCases";
+import FaqAccordion from "./(HomePage)/homepage/FaqAccordion";
+
+import "@rainbow-me/rainbowkit/styles.css";
+import DonateBox from "./(HomePage)/homepage/DonateBox";
+import HowItWorks from "./(HomePage)/homepage/HowItWorks";
+import WhyChooseUs from "./(HomePage)/homepage/WhyChooseUs";
 
 const queryClient = new QueryClient();
 
@@ -16,19 +26,23 @@ export default function HomePage() {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider initialChain={bscTestnet}>
           <HpHeader />
-          <Container maxWidth="lg">
-            <Box sx={{
-                  minHeight: '100vh',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 3}}>
-              <Typography variant="h3" component="h1" gutterBottom>
-                Escrow Web3
-              </Typography>
-            </Box>
-          </Container>
+          
+            <Banner />
+            <Box 
+              sx={{
+                height: {
+                  xs: 100,  
+                  sm: 300,  
+                  md: 500,
+                }
+              }}
+            />
+            <HowItWorks />
+            <WhyChooseUs />
+            <UseCases />
+            <FaqAccordion />
+            <DonateBox />
+
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
