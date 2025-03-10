@@ -21,7 +21,7 @@ const HpHeader = (props: any) => {
     [theme.breakpoints.up("lg")]: {
       minHeight: "100px",
     },
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.common.white,
   }));
 
   const ToolbarStyled = styled(Toolbar)(({ theme }) => ({

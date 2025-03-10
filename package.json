@@ -42,7 +42,7 @@
     "ethers": "^6.11.1",
     "formik": "^2.4.5",
     "formik-mui": "^5.0.0-alpha.0",
-    "framer-motion": "^10.16.4",
+    "framer-motion": "^10.18.0",
     "fslightbox-react": "^1.7.6",
     "gray-matter": "^4.0.3",
     "i18next": "^23.5.1",
@@ -70,6 +70,7 @@
     "styled-components": "^6.0.8",
     "stylis-plugin-rtl": "^2.1.1",
     "typescript": "5.3.3",
+    "uuid": "^11.0.5",
     "viem": "^2.23.2",
     "wagmi": "^2.14.11",
     "yup": "^0.32.11"

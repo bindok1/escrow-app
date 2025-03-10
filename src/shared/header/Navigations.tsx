@@ -15,22 +15,23 @@ export const NavLinks = [
     href: "/",
   },
   {
-    title: "Seller Dashboard",
-    href: "/seller",
-  },
-  {
-    title: "Buyer",
-    href: "/buyer",
-  },
-  {
     title: "Add Product",
     new: true,
     href: "/ecommerce/add-product",
   },
   {
-    title: "My Transactions",
-    href: "/transactions",
-  }
+    title: "Shop",
+    href: "/ecommerce/shop",
+  },
+
+  {
+    title: "Buyer Transactions",
+    href: "/buyer-transactions",
+  },
+  {
+    title: "Seller Transactions",
+    href: "/seller-transactions",
+  },
 ];
 
 const Navigations = () => {
@@ -70,18 +71,7 @@ const Navigations = () => {
         >
           <NextLink href={navlink.href}>
             {navlink.title}{" "}
-            {navlink.new ? (
-              <Chip
-                label="New"
-                size="small"
-                sx={{
-                  ml: "6px",
-                  borderRadius: "8px",
-                  color: "primary.main",
-                  backgroundColor: "rgba(93, 135, 255, 0.15)",
-                }}
-              />
-            ) : null}
+           
           </NextLink>
         </StyledButton>
       ))}
