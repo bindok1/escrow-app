@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { createPublicClient, createWalletClient, custom, http } from 'viem';
-import { bscTestnet } from 'viem/chains';
+import { bsc } from 'viem/chains';
 import DigitalEscrowABI from './escrow/DigitalEscrow.sol/DigitalEscrow.json';
 
 
@@ -11,15 +11,15 @@ if (!CONTRACT_ADDRESS) {
 }
 
 export const publicClient = createPublicClient({
-  chain: bscTestnet,
-  transport: http(process.env.NEXT_PUBLIC_BSC_TESTNET_RPC)
+  chain: bsc,
+  transport: http(process.env.NEXT_PUBLIC_BSC_MAINNET_RPC)
 });
 
 export const getWalletClient = () => {
   if (!window.ethereum) throw new Error('No wallet found');
   
   return createWalletClient({
-    chain: bscTestnet,
+    chain: bsc,
     transport: custom(window.ethereum)
   });
 };
