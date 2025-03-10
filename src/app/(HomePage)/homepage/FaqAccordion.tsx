@@ -16,6 +16,14 @@ const faqData = [
     answer: "Our escrow service uses smart contracts to hold funds securely until both parties fulfill their obligations. The process is automated, transparent, and non-custodial."
   },
   {
+    question: "How to add BNB Smart Chain to my wallet?",
+    answer: "To add BNB Smart Chain to your MetaMask wallet, open your wallet settings and navigate to Networks. Click 'Add Network' and enter these details: Network Name should be 'BNB Smart Chain', use RPC URL 'https://bsc-dataseed.defibit.io', with Chain ID '56'. Set the currency Symbol as 'BNB' and use 'https://bscscan.com' as the Block Explorer URL. After saving, you'll be ready to connect to BNB Smart Chain."
+  },
+  {
+    question: "Why am I getting network errors?",
+    answer: "Make sure you're connected to BNB Smart Chain Mainnet. If you experience RPC issues, you can try alternative RPC URLs from BNB Chain documentation or switch to our recommended RPC: https://bsc-dataseed.defibit.io"
+  },
+  {
     question: "What are the fees?",
     answer: "We only charge minimal gas fees for blockchain transactions. There are no hidden charges or additional fees."
   },

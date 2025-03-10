@@ -6,7 +6,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { Box, Container, Typography } from "@mui/material";
 import HpHeader from "@/shared/header/HpHeader";
 import { wagmiConfig } from "@/app/lib/wagmi/wagmi";
-import { bscTestnet } from "viem/chains";
+import { bsc } from "viem/chains";
 import Banner from "./(HomePage)/homepage/Banner";
 
 
@@ -24,7 +24,7 @@ export default function HomePage() {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider initialChain={bscTestnet}>
+        <RainbowKitProvider initialChain={bsc}>
           <HpHeader />
           
             <Banner />

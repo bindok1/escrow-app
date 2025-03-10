@@ -1,7 +1,7 @@
 
 import { connectorsForWallets, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { createConfig, http } from 'wagmi';
-import { bscTestnet } from 'wagmi/chains';
+import { bsc } from 'wagmi/chains';
 import {
   metaMaskWallet,
   phantomWallet,
@@ -26,9 +26,9 @@ const connectors = connectorsForWallets([
 });
 
 export const wagmiConfig = createConfig({
-  chains: [bscTestnet],
+  chains: [bsc],
   transports: {
-    [bscTestnet.id]: http(process.env.NEXT_PUBLIC_BSC_TESTNET_RPC as string)
+    [bsc.id]: http('https://bsc-dataseed.defibit.io')
   },
   connectors,
   ssr: true
