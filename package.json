@@ -1,6 +1,6 @@
 {
-  "name": "modernize-next-starterkit",
-  "version": "5.0.0",
+  "name": "escrow-app",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
