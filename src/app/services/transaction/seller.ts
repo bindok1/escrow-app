@@ -1,74 +1,59 @@
 import { readContract, writeContract } from "@/app/contracts/contract";
-import { parseEther } from "viem";
+import { parseEther} from "viem";
+import { DeliverProductParams, Transaction, TransactionArray, WithdrawParams } from "./types/transactionTypes";
+import { validateTransactionId, validateProofImage, mapToTransaction, isValidSellerTransaction } from "./utils/transactionUtils";
 
-interface DeliverProductParams {
-  transactionId: number;
-  proofImage: string;
-}
-
-interface WithdrawParams {
-  amount: string;
-}
-
-interface Transaction {
-  buyer: string;
-  seller: string;
-  amount: bigint;
-  productKey: string;
-  proofImage: string;
-  status: number;
-  createdAt: bigint;
-  disputeInitiatedAt: bigint;
-}
 
 export const sellerService = {
-  deliverProduct: async ({
-    transactionId,
-    proofImage,
-  }: DeliverProductParams) => {
-    return writeContract("deliverProduct", [transactionId, proofImage]);
+  deliverProduct: async ({ transactionId, proofImage }: DeliverProductParams) => {
+    validateTransactionId(transactionId);
+    validateProofImage(proofImage);
+
+    try {
+      const txArray = (await readContract("transactions", [transactionId])) as TransactionArray;
+      const currentStatus = txArray[5];
+
+      if (currentStatus !== 1) {
+        throw new Error(`Cannot deliver: Invalid status (current=${currentStatus}, required=${1})`);
+      }
+
+      return writeContract("deliverProduct", [transactionId, proofImage]);
+    } catch (err) {
+      throw err;
+    }
   },
 
   withdraw: async ({ amount }: WithdrawParams) => {
     return writeContract("withdraw", [parseEther(amount)], {});
   },
 
-  // Get seller's available balance
   getBalance: async (address: string): Promise<bigint> => {
-    const balance = await readContract("balances", [address]);
-    return balance as bigint;
+    return readContract("balances", [address]) as Promise<bigint>;
   },
+
   getTransactions: async (address: string): Promise<Transaction[]> => {
-    const count = (await readContract("transactionCount", [])) as number;
-    const transactions: Transaction[] = [];
+    try {
+      const count = (await readContract("transactionCount", [])) as number;
+      const transactions: Transaction[] = [];
 
-    for (let i = 1; i <= count; i++) {
-      try {
-        const txArray = (await readContract("transactions", [i])) as any[];
-
-        if (txArray && txArray.length >= 8) {
-          const tx: Transaction = {
-            seller: txArray[0],
-            buyer: txArray[1],
-            amount: txArray[2],
-            productKey: txArray[3],
-            proofImage: txArray[4],
-            status: txArray[5],
-            createdAt: txArray[6],
-            disputeInitiatedAt: txArray[7],
-          };
-
-          if (tx.seller.toLowerCase() === address.toLowerCase()) {
-            transactions.push(tx);
+      for (let i = 1; i <= count; i++) {
+        const txArray = (await readContract("transactions", [i])) as TransactionArray;
+        
+        if (txArray?.length >= 8) {
+          const transaction = mapToTransaction(txArray, i);
+          
+          if (isValidSellerTransaction(transaction, address)) {
+            transactions.push(transaction);
           }
         }
-      } catch (err) {
-        continue;
       }
-    }
 
-    return transactions;
-  },
+      return transactions;
+    } catch (error) {
+      console.error('Failed to fetch transactions:', error);
+      return [];
+    }
+  }
 };
 
 export type SellerService = typeof sellerService;

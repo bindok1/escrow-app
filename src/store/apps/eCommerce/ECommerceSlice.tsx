@@ -32,6 +32,7 @@ interface ProductType {
   price: string;
   image_url: string;
   seller_address: string;
+  contact_info: string;
 }
 
 const initialState: StateType = {
@@ -104,7 +105,7 @@ export const fetchProducts = () => async (dispatch: AppDispatch) => {
   try {
     const { data, error } = await supabase
       .from('coinrupiah')
-      .select('*');
+      .select('*')
     
     if (error) throw error;
     dispatch(getProducts(data));

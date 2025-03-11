@@ -1,127 +1,67 @@
-import axios from '../../../utils/axios';
 import { createSlice } from '@reduxjs/toolkit';
-import { AppDispatch } from '../../store';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-const API_URL = '/api/data/contacts/ContactsData';
-
-interface StateType {
-  contacts: any[];
-  contactContent: number;
-  contactSearch: string;
-  editContact: boolean;
-  currentFilter: string;
+interface Contact {
+  id: string;
+  sellerAddress: string;
+  type: 'telegram' | 'whatsapp';
+  value: string;
+  createdAt: number;
 }
 
-const initialState = {
+interface StateType {
+  contacts: Contact[];
+  currentContact: Contact | null;
+}
+
+const initialState: StateType = {
   contacts: [],
-  contactContent: 1,
-  contactSearch: '',
-  editContact: false,
-  currentFilter: 'show_all',
+  currentContact: null,
 };
 
 export const ContactSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    getContacts: (state: StateType, action) => {
-      state.contacts = action.payload;
-    },
-    SearchContact: (state: StateType, action) => {
-      state.contactSearch = action.payload;
-    },
-    SelectContact: (state: StateType, action) => {
-      state.contactContent = action.payload;
-    },
-    DeleteContact: (state: StateType, action) => {
-      state.contacts = state.contacts.map((contact) =>
-        contact.id === action.payload ? { ...contact, deleted: !contact.deleted } : contact,
-      );
-    },
-    toggleStarredContact: (state: StateType, action) => {
-      state.contacts = state.contacts.map((contact) =>
-        contact.id === action.payload ? { ...contact, starred: !contact.starred } : contact,
-      );
-    },
-    isEdit: (state: StateType) => {
-      state.editContact = !state.editContact;
-    },
-    setVisibilityFilter: (state: StateType, action) => {
-      state.currentFilter = action.payload;
-    },
-
-    UpdateContact: {
-      reducer: (state: StateType, action: PayloadAction<any>) => {
-        state.contacts = state.contacts.map((contact) =>
-          contact.id === action.payload.id
-            ? { ...contact, [action.payload.field]: action.payload.value }
-            : contact,
-        );
-      },
-      prepare: (id, field, value) => {
-        return {
-          payload: { id, field, value },
-        };
-      },
-    },
     addContact: {
-      reducer: (state: StateType, action: PayloadAction<any>) => {
+      reducer: (state: StateType, action: PayloadAction<Contact>) => {
         state.contacts.push(action.payload);
       },
-      prepare: (
-        id,
-        firstname,
-        lastname,
-        image,
-        department,
-        company,
-        phone,
-        email,
-        address,
-        notes,
-      ) => {
+      prepare: (sellerAddress: string, type: 'telegram' | 'whatsapp', value: string) => {
         return {
           payload: {
-            id,
-            firstname,
-            lastname,
-            image,
-            department,
-            company,
-            phone,
-            email,
-            address,
-            notes,
-            frequentlycontacted: false,
-            starred: false,
-            deleted: false,
+            id: `${sellerAddress}-${Date.now()}`,
+            sellerAddress,
+            type,
+            value,
+            createdAt: Date.now(),
           },
         };
       },
+    },
+    
+    updateContact: (state: StateType, action: PayloadAction<Contact>) => {
+      const index = state.contacts.findIndex(c => c.id === action.payload.id);
+      if (index !== -1) {
+        state.contacts[index] = action.payload;
+      }
+    },
+
+    deleteContact: (state: StateType, action: PayloadAction<string>) => {
+      state.contacts = state.contacts.filter(contact => contact.id !== action.payload);
+    },
+
+    setCurrentContact: (state: StateType, action: PayloadAction<string>) => {
+      state.currentContact = state.contacts.find(c => c.id === action.payload) || null;
     },
   },
 });
 
 export const {
-  getContacts,
-  SearchContact,
-  isEdit,
-  SelectContact,
-  DeleteContact,
-  toggleStarredContact,
-  UpdateContact,
   addContact,
-  setVisibilityFilter,
+  updateContact,
+  deleteContact,
+  setCurrentContact,
 } = ContactSlice.actions;
-
-export const fetchContacts = () => async (dispatch: AppDispatch) => {
-  try {
-    const response = await axios.get(`${API_URL}`);
-    dispatch(getContacts(response.data));
-  } catch (err: any) {
-    throw new Error(err);
-  }
-};
 
 export default ContactSlice.reducer;

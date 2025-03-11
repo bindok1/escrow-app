@@ -7,7 +7,7 @@ export const useSellerTransaction = () => {
   const [error, setError] = useState<string | null>(null);
   const { address, isConnected } = useAccount();
 
-  const handleError = (err: unknown) => 
+  const handleError = (err: unknown) =>
     err instanceof Error ? err.message : "Operation failed";
 
   const checkWallet = () => {
@@ -20,11 +20,11 @@ export const useSellerTransaction = () => {
 
   const getSellerTransactions = async () => {
     if (!checkWallet()) return [];
-    
+
     setIsLoading(true);
     try {
-        const transactions = await sellerService.getTransactions(address!);
-        return transactions; 
+      const transactions = await sellerService.getTransactions(address!);
+      return transactions;
     } catch (err) {
       const message = handleError(err);
       setError(message);
@@ -36,10 +36,17 @@ export const useSellerTransaction = () => {
 
   const deliverProduct = async (transactionId: number, proofImage: string) => {
     if (!checkWallet()) return;
-    
+
     setIsLoading(true);
     try {
-      return await sellerService.deliverProduct({ transactionId, proofImage });
+      const result = await sellerService.deliverProduct({
+        transactionId,
+        proofImage,
+      });
+
+      await getSellerTransactions();
+
+      return result;
     } catch (err) {
       const message = handleError(err);
       setError(message);
