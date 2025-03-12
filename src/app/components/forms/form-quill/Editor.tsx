@@ -8,7 +8,9 @@ import QuillEdit from "./QuillEdit";
 const Editor = () => {
   return (
     <ParentCard title="Quill Editor">
-      <QuillEdit />
+      <QuillEdit value={""} onChange={function (content: string): void {
+        throw new Error("Function not implemented.");
+      } } />
     </ParentCard>
   );
 };
