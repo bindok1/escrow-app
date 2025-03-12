@@ -16,12 +16,12 @@
 // import { useSelector, useDispatch } from "@/store/hooks";
 // import emptyCart from "/public/images/products/empty-shopping-cart.svg";
 // import {
-//   increment,
 //   deleteCart,
-//   decrement,
 // } from "@/store/apps/eCommerce/ECommerceSlice";
-// import { ProductType } from "../../../../(DashboardLayout)/types/apps/eCommerce";
+
 // import Image from "next/image";
+// import { ProductType } from '@/app/(DashboardLayout)/types/apps/eCommerce';
+// import { decrement, increment } from '@/store/counter/counterSlice';
 
 // const AddToCart = () => {
 //   const dispatch = useDispatch();

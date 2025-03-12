@@ -4,7 +4,7 @@ import { sum } from 'lodash';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import AddToCart from '../productCart/AddToCart';
+
 import { IconArrowBack } from '@tabler/icons-react';
 import { useSelector } from '@/store/hooks';
 import HorizontalStepper from './HorizontalStepper';
@@ -30,7 +30,7 @@ const ProductChecout = () => {
     setActiveStep(0);
   };
 
-  const total = sum(checkout.map((product: ProductType) => product.price * product.qty));
+  const total = sum(checkout.map((product: ProductType) => product.price ));
   const Discount = Math.round(total * (5 / 100));
 
   return (
@@ -47,7 +47,7 @@ const ProductChecout = () => {
         {activeStep === 0 ? (
           <>
             <Box my={3}>
-              <AddToCart />
+             
             </Box>
             {checkout.length > 0 ? (
               <>
