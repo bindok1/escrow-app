@@ -1,3 +1,6 @@
+export interface ProductDemo{
+  title: string;
+}
 
 export interface ProductType {
   id: string;
