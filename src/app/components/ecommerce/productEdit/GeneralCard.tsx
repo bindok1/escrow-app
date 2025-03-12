@@ -37,7 +37,9 @@ const GeneralCard = () => {
           <CustomFormLabel htmlFor="desc">Description</CustomFormLabel>
         </Grid>
         <Grid item xs={12}>
-          <QuillEdit />
+          <QuillEdit value={""} onChange={function (content: string): void {
+            throw new Error("Function not implemented.");
+          } } />
           <Typography variant="body2">
             Set a description to the product for better visibility.
           </Typography>
